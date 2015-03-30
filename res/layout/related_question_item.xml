@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:background="@android:color/white"
+    tools:context="com.teddytab.dilemma.MainActivity" >
+    
+    <LinearLayout
+        android:id="@+id/images"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentTop="true" >
+
+        <com.android.volley.toolbox.NetworkImageView
+            android:id="@+id/image1"
+            android:layout_width="@dimen/related_image_width"
+            android:layout_height="@dimen/related_image_height"
+            android:scaleType="centerCrop" />
+
+        <com.android.volley.toolbox.NetworkImageView
+            android:id="@+id/image2"
+            android:layout_width="@dimen/related_image_width"
+            android:layout_height="@dimen/related_image_height"
+            android:scaleType="centerCrop" />
+    </LinearLayout>
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerInParent="true"
+        android:background="@drawable/circle_colored"
+        android:padding="@dimen/small_margin"
+        android:text="@string/or"
+        android:textColor="@android:color/white"
+        android:textStyle="bold" />
+
+</RelativeLayout>
+    

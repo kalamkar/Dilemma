@@ -1,0 +1,29 @@
+<!-- Copyright 2013 TeddyTab llc. All rights reserved. -->
+
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+    <com.android.volley.toolbox.NetworkImageView
+        android:id="@+id/image"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:scaleType="centerCrop" />
+
+    <ImageView
+        android:id="@+id/button"
+        android:layout_width="@dimen/option_image_button_width"
+        android:layout_height="@dimen/option_image_button_height"
+        android:layout_alignParentTop="true"
+        android:layout_centerHorizontal="true"
+        android:src="@drawable/ic_action_camera" />
+
+    <ImageView
+        android:id="@+id/pin"
+        android:layout_width="@dimen/option_image_button_width"
+        android:layout_height="@dimen/option_image_button_height"
+        android:layout_alignParentRight="true"
+        android:layout_alignParentTop="true"
+        android:src="@drawable/ic_action_pin"
+        android:background="@drawable/circle" />
+
+</RelativeLayout>

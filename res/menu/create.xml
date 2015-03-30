@@ -1,0 +1,14 @@
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    tools:context="com.teddytab.dilemma.MainActivity" >
+
+    <item
+        android:id="@+id/action_post"
+        android:orderInCategory="100"
+        android:title="@string/post"
+        android:icon="@drawable/ic_action_send"
+        android:enabled="false"
+        android:showAsAction="always|withText" />
+
+</menu>

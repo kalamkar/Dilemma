@@ -1,0 +1,75 @@
+<resources xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <!--
+        Base application theme, dependent on API level. This theme is replaced
+        by AppBaseTheme from res/values-vXX/styles.xml on newer devices.
+    -->
+    <style name="AppBaseTheme" parent="android:Theme.Holo.Light.DarkActionBar">
+        <!--
+            Theme customizations available in newer API levels can go in
+            res/values-vXX/styles.xml, while customizations related to
+            backward-compatibility can go here.
+        -->
+    </style>
+
+    <!-- Application theme. -->
+    <style name="AppTheme" parent="AppBaseTheme">
+        <!-- All customizations that are NOT specific to a particular API-level can go here. -->
+        <item name="android:actionBarStyle">@style/DilemmaActionBar</item>
+    </style>
+    
+    <!-- ActionBar styles -->
+    <style name="DilemmaActionBar"
+           parent="@android:style/Widget.Holo.Light.ActionBar.Solid.Inverse">
+        <item name="android:background">@color/action_bar</item>
+        <item name="android:displayOptions">showHome|useLogo</item>
+    </style>
+    
+    <style name="DetailsImageTitle">
+        <item name="android:text">Pizza</item>
+        <item name="android:background">@color/black_background_translucent</item>
+        <item name="android:textColor">@android:color/white</item>
+        <item name="android:gravity">center</item>
+        <item name="android:textAppearance">?android:attr/textAppearanceSmall</item>
+        <item name="android:paddingTop">@dimen/small_margin</item>
+        <item name="android:paddingRight">@dimen/medium_margin</item>
+        <item name="android:paddingBottom">@dimen/small_margin</item>
+        <item name="android:paddingLeft">@dimen/medium_margin</item>
+    </style>
+    
+    <style name="QuestionTitle">
+        <item name="android:text">What is more delicious?</item>
+        <item name="android:textColor">@color/gray_text</item>
+        <item name="android:gravity">center</item>
+        <item name="android:textAppearance">?android:attr/textAppearanceSmall</item>
+        <item name="android:padding">@dimen/small_margin</item>
+    </style>
+    
+    <style name="CardQuestionTitle">
+        <item name="android:text">What is more delicious?</item>
+        <item name="android:textColor">@color/gray_text</item>
+        <item name="android:textAppearance">?android:attr/textAppearanceSmall</item>
+        <item name="android:shadowColor">@color/gray_text</item>
+        <item name="android:shadowDx">1</item>
+        <item name="android:shadowDy">1</item>
+        <item name="android:shadowRadius">1</item>
+        <item name="android:padding">@dimen/small_margin</item>
+    </style>
+    
+    <style name="TextBox">
+        <item name="android:textColor">@android:color/white</item>
+        <item name="android:textColorHint">#F0F0F0</item>
+        <item name="android:gravity">center</item>
+        <item name="android:padding">@dimen/medium_margin</item>
+        <item name="android:textSize">20sp</item>
+    </style>
+    
+    <style name="StatText">
+        <item name="android:textColor">@android:color/white</item>
+        <item name="android:paddingTop">@dimen/medium_margin</item>
+        <item name="android:paddingRight">@dimen/small_margin</item>
+        <item name="android:paddingBottom">@dimen/medium_margin</item>
+        <item name="android:paddingLeft">@dimen/small_margin</item>
+    </style>
+
+</resources>

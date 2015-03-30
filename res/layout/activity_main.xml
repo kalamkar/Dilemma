@@ -1,0 +1,17 @@
+<!-- Copyright 2013 TeddyTab llc. All rights reserved. -->
+
+<android.support.v4.view.ViewPager xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/pager"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/light_gray">
+    
+    <android.support.v4.view.PagerTitleStrip
+        android:id="@+id/pager_title_strip"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_gravity="top"
+        android:textColor="@color/gray_text"
+        android:paddingTop="@dimen/medium_margin"
+        android:paddingBottom="@dimen/medium_margin" />
+</android.support.v4.view.ViewPager>

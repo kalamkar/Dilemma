@@ -1,0 +1,84 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    tools:context="com.teddytab.dilemma.MainActivity" >
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="5" >
+
+        <LinearLayout
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:orientation="vertical"
+            android:background="@color/purple" >
+
+            <EditText
+                android:id="@+id/option1"
+                style="@style/TextBox"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="@string/this_text"
+                android:inputType="text|textCapWords"
+                android:nextFocusForward="@+id/option2"
+                android:nextFocusRight="@+id/option2"
+                android:nextFocusDown="@+id/option2" />
+
+            <com.teddytab.dilemma.VerticalViewPager
+                android:id="@+id/image1"
+                android:layout_width="match_parent"
+                android:layout_height="fill_parent" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:background="@color/orange"
+            android:orientation="vertical" >
+
+            <EditText
+                android:id="@+id/option2"
+                style="@style/TextBox"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="@string/that"
+                android:inputType="text|textCapWords"
+                android:nextFocusForward="@+id/question"
+                android:nextFocusDown="@+id/question" />
+
+            <com.teddytab.dilemma.VerticalViewPager
+                android:id="@+id/image2"
+                android:layout_width="match_parent"
+                android:layout_height="fill_parent" />
+        </LinearLayout>
+    </LinearLayout>
+
+    <FrameLayout
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1.3"
+        android:padding="@dimen/medium_margin"
+        android:background="@color/action_bar" >
+
+        <EditText
+            android:id="@+id/title"
+            style="@style/TextBox"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:hint="@string/question"
+            android:inputType="text|textAutoCorrect|textCapSentences|textShortMessage" />
+    </FrameLayout>
+
+    <Space
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_weight="3.7" />
+
+</LinearLayout>

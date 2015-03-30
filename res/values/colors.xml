@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+ 
+    <item name="black_background_translucent" type="color">#B0000000</item>
+    
+    <item name="lemon_opaque" type="color">#FFFFF44F</item>
+    <item name="lemon_transparent" type="color">#A0FFF44F</item>
+    
+    <item name="lime_opaque" type="color">#FF32CD32</item>
+    <item name="lime_transparent" type="color">#A032CD32</item>
+    
+    <item name="lemon_dark_opaque" type="color">#D4CE90</item>
+    <item name="lemon_dark_transparent" type="color">#A0D4CE90</item>
+    
+    <item name="dilemma_icon" type="color">#fffcee21</item>
+    
+    <item name="action_bar" type="color">#81D4BF</item>
+    
+    <item name="light_gray" type="color">#EEEEEE</item>
+    <item name="gray_text" type="color">#808080</item>
+    <item name="border" type="color">#D6D6D6</item>
+    
+    <item name="purple" type="color">#AF73D1</item>
+    <item name="turquoise" type="color">#76D5DB</item>
+    <item name="orange" type="color">#FA9E4D</item>
+    <item name="red" type="color">#F56E8E</item>
+    <item name="green" type="color">#A0D9A1</item>
+    <item name="blue" type="color">#7F92FA</item>
+        
+</resources>
