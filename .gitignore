@@ -1,2 +1,5 @@
-/gen/
-/bin/
+.build/**
+.idea/**
+.gradle/**
+app/build/**
+build/**
