@@ -1,12 +1,5 @@
 package com.teddytab.dilemma.fragments;
 
-import java.io.UnsupportedEncodingException;
-import java.util.ArrayList;
-import java.util.List;
-
-import org.apache.http.client.methods.HttpGet;
-import org.apache.http.client.methods.HttpRequestBase;
-
 import android.app.Activity;
 import android.content.Intent;
 import android.net.Uri;
@@ -31,6 +24,12 @@ import com.teddytab.dilemma.R;
 import com.teddytab.dilemma.Utils;
 import com.teddytab.dilemma.model.ApiResponse;
 import com.teddytab.dilemma.model.Question;
+
+import java.io.UnsupportedEncodingException;
+import java.util.ArrayList;
+import java.util.List;
+
+import okhttp3.Request;
 
 public abstract class QuestionsFragment extends Fragment {
 	public static final String TAG = "QuestionsFragment";
@@ -59,18 +58,18 @@ public abstract class QuestionsFragment extends Fragment {
 		((AbsListView) view.findViewById(R.id.questions)).setAdapter(adapter);
 	}
 
-	protected HttpRequestBase makeRequest(Pair<String, String>... params)
+	protected Request makeRequest(Pair<String, String>... params)
 			throws UnsupportedEncodingException {
 		Uri.Builder uri = Uri.parse(Config.SEARCH_URL).buildUpon();
 		for (Pair<String, String> param : params) {
 			uri.appendQueryParameter(param.first, param.second);
 		}
-		return new HttpGet(uri.build().toString());
+		return new Request.Builder().url(uri.build().toString()).build();
 	}
 
 	protected class GetQuestionList extends ApiResponseTask {
 		@Override
-		protected HttpRequestBase makeRequest(Pair<String, String>... params)
+		protected Request makeRequest(Pair<String, String>... params)
 				throws UnsupportedEncodingException {
 			return QuestionsFragment.this.makeRequest(params);
 		}

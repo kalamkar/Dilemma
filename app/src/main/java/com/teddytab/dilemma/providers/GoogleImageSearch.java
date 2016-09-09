@@ -1,15 +1,5 @@
 package com.teddytab.dilemma.providers;
 
-import java.io.ByteArrayOutputStream;
-import java.util.ArrayList;
-import java.util.List;
-
-import org.apache.http.HttpResponse;
-import org.apache.http.client.methods.HttpGet;
-import org.apache.http.impl.client.DefaultHttpClient;
-import org.apache.http.params.HttpConnectionParams;
-import org.apache.http.params.HttpParams;
-
 import android.net.Uri;
 import android.os.AsyncTask;
 import android.util.Log;
@@ -17,6 +7,14 @@ import android.util.Log;
 import com.teddytab.dilemma.Utils;
 import com.teddytab.dilemma.model.Media;
 import com.teddytab.dilemma.model.Media.Attribution;
+
+import java.util.ArrayList;
+import java.util.List;
+import java.util.concurrent.TimeUnit;
+
+import okhttp3.OkHttpClient;
+import okhttp3.Request;
+import okhttp3.Response;
 
 public abstract class GoogleImageSearch extends AsyncTask<String, Void, List<Media>> {
 	private final static String TAG = "GoogleImageSearch";
@@ -44,19 +42,14 @@ public abstract class GoogleImageSearch extends AsyncTask<String, Void, List<Med
 		int responseStatus;
 	}
 
-	protected final DefaultHttpClient httpClient = new DefaultHttpClient();
-
-	public GoogleImageSearch() {
-		HttpParams params = httpClient.getParams();
-		HttpConnectionParams.setConnectionTimeout(params, 5000);
-		HttpConnectionParams.setSoTimeout(params, 5000);
-		httpClient.setParams(params);
-	}
+	protected final OkHttpClient httpClient = new OkHttpClient.Builder()
+			.connectTimeout(5000, TimeUnit.MILLISECONDS)
+			.readTimeout(5000, TimeUnit.MILLISECONDS)
+			.build();
 
 	@Override
 	protected List<Media> doInBackground(String... query) {
 		List<Media> mediaList = new ArrayList<Media>();
-		ByteArrayOutputStream output = new ByteArrayOutputStream();
 		try {
 			Uri.Builder uri = Uri.parse(SEARCH_URL).buildUpon();
 			uri.appendQueryParameter("as_rights", Uri.encode(RIGHTS));
@@ -65,14 +58,14 @@ public abstract class GoogleImageSearch extends AsyncTask<String, Void, List<Med
 			}
 			String requestUrl = uri.build().toString();
 			Log.v(TAG, requestUrl);
-			HttpResponse response = httpClient.execute(new HttpGet(requestUrl));
-			if (response != null && response.getEntity() != null) {
-				response.getEntity().writeTo(output);
+			Response response =
+					httpClient.newCall(new Request.Builder().url(requestUrl).build()).execute();
+			if (response == null || response.isSuccessful()) {
+				return mediaList;
 			}
-			output.close();
-			Result result = Utils.fromJson(output.toString(), Result.class);
+			Result result = Utils.fromJson(response.body().string(), Result.class);
 			if (result == null || result.responseStatus != 200) {
-				Log.v(TAG, output.toString());
+				Log.v(TAG, response.toString());
 				return mediaList;
 			}
 			for (Photo photo : result.responseData.results) {

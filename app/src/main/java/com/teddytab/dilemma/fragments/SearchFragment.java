@@ -53,7 +53,7 @@ public class SearchFragment extends Fragment {
 					public void run() {
 						if (!text.toString().isEmpty() && getFragmentManager() != null) {
 							getFragmentManager().beginTransaction().replace(R.id.results,
-									new SearchResultsFragment(text.toString())).commit();
+									new SearchResultsFragment().setQuery(text.toString())).commit();
 						}
 						((InputMethodManager) getActivity().getSystemService(
 								Context.INPUT_METHOD_SERVICE)).hideSoftInputFromWindow(
@@ -72,11 +72,16 @@ public class SearchFragment extends Fragment {
 		});
 	}
 
-	private static class SearchResultsFragment extends QuestionsFragment {
-		private final String query;
+	public static class SearchResultsFragment extends QuestionsFragment {
+		private String query;
 
-		SearchResultsFragment(String query) {
+		public SearchResultsFragment() {
+			this.query = "";
+		}
+
+		public Fragment setQuery(String query) {
 			this.query = query;
+            return this;
 		}
 
 		@SuppressWarnings("unchecked")

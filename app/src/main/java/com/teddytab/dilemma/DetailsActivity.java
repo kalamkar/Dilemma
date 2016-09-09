@@ -1,18 +1,5 @@
 package com.teddytab.dilemma;
 
-import java.io.UnsupportedEncodingException;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Map;
-
-import org.apache.http.NameValuePair;
-import org.apache.http.client.entity.UrlEncodedFormEntity;
-import org.apache.http.client.methods.HttpGet;
-import org.apache.http.client.methods.HttpPost;
-import org.apache.http.client.methods.HttpPut;
-import org.apache.http.client.methods.HttpRequestBase;
-import org.apache.http.message.BasicNameValuePair;
-
 import android.app.AlertDialog;
 import android.content.ComponentName;
 import android.content.DialogInterface;
@@ -38,6 +25,14 @@ import com.android.volley.toolbox.NetworkImageView;
 import com.teddytab.dilemma.fragments.RelatedQuestionsFragment;
 import com.teddytab.dilemma.model.ApiResponse;
 import com.teddytab.dilemma.model.Question;
+
+import java.io.UnsupportedEncodingException;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Map;
+
+import okhttp3.FormBody;
+import okhttp3.Request;
 
 @SuppressWarnings("unchecked")
 public class DetailsActivity extends FragmentActivity implements OnClickListener {
@@ -200,20 +195,19 @@ public class DetailsActivity extends FragmentActivity implements OnClickListener
 		}
 
 		@Override
-		protected HttpRequestBase makeRequest(Pair<String, String>... params)
+		protected Request makeRequest(Pair<String, String>... params)
 				throws UnsupportedEncodingException {
-			List<NameValuePair> queryParams = new ArrayList<NameValuePair>();
-			queryParams.add(new BasicNameValuePair("idfa", app.idfa));
-			queryParams.add(new BasicNameValuePair("type", "GOOGLE"));
+			FormBody.Builder builder = new FormBody.Builder()
+					.add("idfa", app.idfa)
+					.add("type", "GOOGLE");
+
 			for (Pair<String, String> param : params) {
-				queryParams.add(new BasicNameValuePair(param.first, param.second));
+				builder.add(param.first, param.second);
 			}
-			queryParams.add(new BasicNameValuePair("qid", questionId));
-			queryParams.add(new BasicNameValuePair("chix", Integer.toString(choiceIndex)));
+			builder.add("qid", questionId);
+			builder.add("chix", Integer.toString(choiceIndex));
 			Log.v(TAG, String.format("Selected answer #%d for %s", choiceIndex, questionId));
-			HttpPost request = new HttpPost(Config.ANSWER_URL);
-			request.setEntity(new UrlEncodedFormEntity(queryParams));
-			return request;
+			return new Request.Builder().url(Config.ANSWER_URL).post(builder.build()).build();
 		}
 
 		@Override
@@ -245,19 +239,18 @@ public class DetailsActivity extends FragmentActivity implements OnClickListener
 		}
 
 		@Override
-		protected HttpRequestBase makeRequest(Pair<String, String>... params)
+		protected Request makeRequest(Pair<String, String>... params)
 				throws UnsupportedEncodingException {
-			List<NameValuePair> queryParams = new ArrayList<NameValuePair>();
-			queryParams.add(new BasicNameValuePair("idfa", app.idfa));
-			queryParams.add(new BasicNameValuePair("type", "GOOGLE"));
+			FormBody.Builder builder = new FormBody.Builder()
+					.add("idfa", app.idfa)
+					.add("type", "GOOGLE");
+
 			for (Pair<String, String> param : params) {
-				queryParams.add(new BasicNameValuePair(param.first, param.second));
+				builder.add(param.first, param.second);
 			}
-			queryParams.add(new BasicNameValuePair("qid", questionId));
-			queryParams.add(new BasicNameValuePair("actn", "SHARE"));
-			HttpPost request = new HttpPost(Config.ACTION_URL);
-			request.setEntity(new UrlEncodedFormEntity(queryParams));
-			return request;
+			builder.add("qid", questionId);
+			builder.add("actn", "SHARE");
+			return new Request.Builder().url(Config.ACTION_URL).post(builder.build()).build();
 		}
 
 		@Override
@@ -278,19 +271,18 @@ public class DetailsActivity extends FragmentActivity implements OnClickListener
 		}
 
 		@Override
-		protected HttpRequestBase makeRequest(Pair<String, String>... params)
+		protected Request makeRequest(Pair<String, String>... params)
 				throws UnsupportedEncodingException {
-			List<NameValuePair> queryParams = new ArrayList<NameValuePair>();
-			queryParams.add(new BasicNameValuePair("idfa", app.idfa));
-			queryParams.add(new BasicNameValuePair("type", "GOOGLE"));
+			FormBody.Builder builder = new FormBody.Builder()
+					.add("idfa", app.idfa)
+					.add("type", "GOOGLE");
+
 			for (Pair<String, String> param : params) {
-				queryParams.add(new BasicNameValuePair(param.first, param.second));
+				builder.add(param.first, param.second);
 			}
-			queryParams.add(new BasicNameValuePair("qid", questionId));
-			queryParams.add(new BasicNameValuePair("flag", "1"));
-			HttpPut request = new HttpPut(Config.QUESTION_URL);
-			request.setEntity(new UrlEncodedFormEntity(queryParams));
-			return request;
+			builder.add("qid", questionId);
+			builder.add("flag", "1");
+			return new Request.Builder().url(Config.QUESTION_URL).post(builder.build()).build();
 		}
 
 		@Override
@@ -304,13 +296,13 @@ public class DetailsActivity extends FragmentActivity implements OnClickListener
 
 	protected class GetRelatedQuestions extends ApiResponseTask {
 		@Override
-		protected HttpRequestBase makeRequest(Pair<String, String>... params)
+		protected Request makeRequest(Pair<String, String>... params)
 				throws UnsupportedEncodingException {
 			Uri.Builder uri = Uri.parse(Config.RELATED_URL).buildUpon();
 			for (Pair<String, String> param : params) {
 				uri.appendQueryParameter(param.first, param.second);
 			}
-			return new HttpGet(uri.build().toString());
+			return new Request.Builder().url(uri.build().toString()).build();
 		}
 
 		@Override

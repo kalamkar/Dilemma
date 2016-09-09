@@ -1,15 +1,5 @@
 package com.teddytab.dilemma.providers;
 
-import java.io.ByteArrayOutputStream;
-import java.util.ArrayList;
-import java.util.List;
-
-import org.apache.http.HttpResponse;
-import org.apache.http.client.methods.HttpGet;
-import org.apache.http.impl.client.DefaultHttpClient;
-import org.apache.http.params.HttpConnectionParams;
-import org.apache.http.params.HttpParams;
-
 import android.net.Uri;
 import android.os.AsyncTask;
 import android.util.Log;
@@ -17,6 +7,15 @@ import android.util.Log;
 import com.teddytab.dilemma.Utils;
 import com.teddytab.dilemma.model.Media;
 import com.teddytab.dilemma.model.Media.Attribution;
+
+import java.io.ByteArrayOutputStream;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.concurrent.TimeUnit;
+
+import okhttp3.OkHttpClient;
+import okhttp3.Request;
+import okhttp3.Response;
 
 public abstract class FlickrSearch extends AsyncTask<String, Void, List<Media>> {
 	private final static String TAG = "FlickrResponseTask";
@@ -55,14 +54,11 @@ public abstract class FlickrSearch extends AsyncTask<String, Void, List<Media>> 
 		String stat;
 	}
 
-	protected final DefaultHttpClient httpClient = new DefaultHttpClient();
+	protected final OkHttpClient httpClient = new OkHttpClient.Builder()
+			.connectTimeout(5000, TimeUnit.MILLISECONDS)
+			.readTimeout(5000, TimeUnit.MILLISECONDS)
+			.build();
 
-	public FlickrSearch() {
-		HttpParams params = httpClient.getParams();
-		HttpConnectionParams.setConnectionTimeout(params, 5000);
-		HttpConnectionParams.setSoTimeout(params, 5000);
-		httpClient.setParams(params);
-	}
 
 	@Override
 	protected List<Media> doInBackground(String... query) {
@@ -75,12 +71,14 @@ public abstract class FlickrSearch extends AsyncTask<String, Void, List<Media>> 
 			}
 			String requestUrl = uri.build().toString();
 			Log.v(TAG, requestUrl);
-			HttpResponse response = httpClient.execute(new HttpGet(requestUrl));
-			if (response != null && response.getEntity() != null) {
-				response.getEntity().writeTo(output);
+			Request request = new Request.Builder()
+					.url(requestUrl)
+					.build();
+			Response response = httpClient.newCall(request).execute();
+			if (response == null || !response.isSuccessful()) {
+				return mediaList;
 			}
-			output.close();
-			Result result = Utils.fromJson(output.toString(), Result.class);
+			Result result = Utils.fromJson(response.body().string(), Result.class);
 			if (result == null || !"ok".equalsIgnoreCase(result.stat)) {
 				Log.v(TAG, output.toString());
 				return mediaList;

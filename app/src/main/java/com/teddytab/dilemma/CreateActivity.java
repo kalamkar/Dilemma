@@ -1,18 +1,5 @@
 package com.teddytab.dilemma;
 
-import java.io.UnsupportedEncodingException;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Locale;
-import java.util.Timer;
-import java.util.TimerTask;
-
-import org.apache.http.NameValuePair;
-import org.apache.http.client.entity.UrlEncodedFormEntity;
-import org.apache.http.client.methods.HttpPost;
-import org.apache.http.client.methods.HttpRequestBase;
-import org.apache.http.message.BasicNameValuePair;
-
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
@@ -36,6 +23,16 @@ import com.teddytab.dilemma.model.Choice;
 import com.teddytab.dilemma.model.Media;
 import com.teddytab.dilemma.model.Question;
 import com.teddytab.dilemma.providers.GoogleImageSearch;
+
+import java.io.UnsupportedEncodingException;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Locale;
+import java.util.Timer;
+import java.util.TimerTask;
+
+import okhttp3.FormBody;
+import okhttp3.Request;
 
 public class CreateActivity extends FragmentActivity {
 	private static final String TAG = "CreateActivity";
@@ -202,19 +199,18 @@ public class CreateActivity extends FragmentActivity {
 		}
 
 		@Override
-		protected HttpRequestBase makeRequest(Pair<String, String>... params)
+		protected Request makeRequest(Pair<String, String>... params)
 				throws UnsupportedEncodingException {
-			List<NameValuePair> queryParams = new ArrayList<NameValuePair>();
-			queryParams.add(new BasicNameValuePair("idfa", app.idfa));
-			queryParams.add(new BasicNameValuePair("type", "GOOGLE"));
+			FormBody.Builder builder = new FormBody.Builder()
+					.add("idfa", app.idfa)
+					.add("type", "GOOGLE");
+
 			for (Pair<String, String> param : params) {
-				queryParams.add(new BasicNameValuePair(param.first, param.second));
+				builder.add(param.first, param.second);
 			}
-			queryParams.add(new BasicNameValuePair("qstn", Utils.toJson(question)));
+			builder.add("qstn", Utils.toJson(question));
 			Log.v(TAG, Utils.toJson(question));
-			HttpPost request = new HttpPost(Config.QUESTION_URL);
-			request.setEntity(new UrlEncodedFormEntity(queryParams));
-			return request;
+			return new Request.Builder().url(Config.QUESTION_URL).post(builder.build()).build();
 		}
 
 		@Override

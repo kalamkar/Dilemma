@@ -1,19 +1,5 @@
 package com.teddytab.dilemma;
 
-import java.io.IOException;
-import java.io.UnsupportedEncodingException;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-
-import org.apache.http.NameValuePair;
-import org.apache.http.client.entity.UrlEncodedFormEntity;
-import org.apache.http.client.methods.HttpGet;
-import org.apache.http.client.methods.HttpPost;
-import org.apache.http.client.methods.HttpRequestBase;
-import org.apache.http.message.BasicNameValuePair;
-
 import android.app.Application;
 import android.graphics.Bitmap;
 import android.net.Uri;
@@ -34,6 +20,14 @@ import com.google.android.gms.gcm.GoogleCloudMessaging;
 import com.teddytab.dilemma.messaging.GCMUtils;
 import com.teddytab.dilemma.model.ApiResponse;
 import com.teddytab.dilemma.model.Question;
+
+import java.io.IOException;
+import java.io.UnsupportedEncodingException;
+import java.util.HashMap;
+import java.util.Map;
+
+import okhttp3.FormBody;
+import okhttp3.Request;
 
 @SuppressWarnings("unchecked")
 public class App extends Application {
@@ -137,15 +131,14 @@ public class App extends Application {
 
 	private class RegisterDevice extends ApiResponseTask {
 		@Override
-		protected HttpRequestBase makeRequest(Pair<String, String>... params)
+		protected Request makeRequest(Pair<String, String>... params)
 				throws UnsupportedEncodingException {
-			List<NameValuePair> queryParams = new ArrayList<NameValuePair>();
-			queryParams.add(new BasicNameValuePair("idfa", idfa));
-			queryParams.add(new BasicNameValuePair("type", "GOOGLE"));
-			queryParams.add(new BasicNameValuePair("push_token", registrationId));
-			HttpPost request = new HttpPost(Config.USER_URL);
-			request.setEntity(new UrlEncodedFormEntity(queryParams));
-			return request;
+			FormBody body = new FormBody.Builder()
+					.add("idfa", idfa)
+					.add("type", "GOOGLE")
+					.add("push_token", registrationId)
+					.build();
+			return new Request.Builder().url(Config.USER_URL).post(body).build();
 		}
 
 		@Override
@@ -157,7 +150,7 @@ public class App extends Application {
 
 	private class GetAnswersList extends ApiResponseTask {
 		@Override
-		protected HttpRequestBase makeRequest(Pair<String, String>... params)
+		protected Request makeRequest(Pair<String, String>... params)
 				throws UnsupportedEncodingException {
 			Uri.Builder uri = Uri.parse(Config.ANSWER_URL).buildUpon();
 			uri.appendQueryParameter("idfa", idfa);
@@ -165,7 +158,7 @@ public class App extends Application {
 			for (Pair<String, String> param : params) {
 				uri.appendQueryParameter(param.first, param.second);
 			}
-			return new HttpGet(uri.build().toString());
+			return new Request.Builder().url(uri.build().toString()).build();
 		}
 
 		@Override
