@@ -34,7 +34,7 @@ import okhttp3.Request;
 public abstract class QuestionsFragment extends Fragment {
 	public static final String TAG = "QuestionsFragment";
 
-	protected final List<String> questionIds = new ArrayList<String>();
+	protected final List<String> questionIds = new ArrayList<>();
 	protected App app;
 	protected QuestionGridAdapter adapter;
 
