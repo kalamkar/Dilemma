@@ -22,7 +22,7 @@ import com.teddytab.dilemma.model.ApiResponse;
 import com.teddytab.dilemma.model.Choice;
 import com.teddytab.dilemma.model.Media;
 import com.teddytab.dilemma.model.Question;
-import com.teddytab.dilemma.providers.GoogleImageSearch;
+import com.teddytab.dilemma.providers.FlickrSearch;
 
 import java.io.UnsupportedEncodingException;
 import java.util.ArrayList;
@@ -234,7 +234,7 @@ public class CreateActivity extends FragmentActivity {
 		}
 	}
 
-	private class ImageSearch extends GoogleImageSearch {
+	private class ImageSearch extends FlickrSearch {
 		private final int imageId;
 		private final List<Media> optionImages;
 

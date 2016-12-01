@@ -79,15 +79,12 @@ public class App extends Application {
 	}
 
 	private void requestAdvertisingId() {
-		new AsyncTask<Void,Void,Void>() {
+		new AsyncTask<Void, Void, String>() {
 			@Override
-			protected Void doInBackground(Void... params) {
+			protected String doInBackground(Void... params) {
 				try {
 					Info info = AdvertisingIdClient.getAdvertisingIdInfo(App.this);
-					idfa = info.getId();
-					if (registrationId != null) {
-	                	new RegisterDevice().execute();
-	                }
+					return info.getId();
 				} catch (IllegalStateException e) {
 					Log.w(TAG, e);
 				} catch (GooglePlayServicesRepairableException e) {
@@ -99,7 +96,18 @@ public class App extends Application {
 				}
 				return null;
 			}
-		}.execute();
+
+            @Override
+            protected void onPostExecute(String adId) {
+                if (adId == null) {
+                    return;
+                }
+                idfa = adId;
+                if (registrationId != null) {
+                    new RegisterDevice().execute();
+                }
+            }
+        }.execute();
 	}
 
 	public void requestRegistrationId() {
@@ -108,24 +116,32 @@ public class App extends Application {
 			new RegisterDevice().execute();
 			return;
 		}
-	    new AsyncTask<Void, Void, Void>() {
+	    new AsyncTask<Void, Void, String>() {
 			@Override
-	        protected Void doInBackground(Void... params) {
+	        protected String doInBackground(Void... params) {
 	            try {
 	            	if (gcm == null) {
 	                    gcm = GoogleCloudMessaging.getInstance(App.this);
 	                }
-	                registrationId = gcm.register(Config.GCM_SENDER_ID);
-	                Log.i(TAG, "Device registered, registration ID = " + registrationId);
-	                if (idfa != null) {
-	                	new RegisterDevice().execute();
-	                }
-	                GCMUtils.storeRegistrationId(App.this, registrationId);
+	                return gcm.register(Config.GCM_SENDER_ID);
 	            } catch (IOException ex) {
 	                Log.w(TAG, ex);
 	            }
 	            return null;
 	        }
+
+            @Override
+            protected void onPostExecute(String regId) {
+                if (regId == null) {
+                    return;
+                }
+                registrationId = regId;
+                Log.i(TAG, "Device registered, registration ID = " + registrationId);
+                GCMUtils.storeRegistrationId(App.this, registrationId);
+                if (idfa != null) {
+                    new RegisterDevice().execute();
+                }
+            }
 	    }.execute(null, null, null);
 	}
 
